@@ -1,9 +1,14 @@
-# dynu/dynu_table.nu
+# dynu/constants.nu
 
-# Define the path to the dynu table file
-export const dynu_path = "~/.dynu.nuon"
+# Define the path to the current table file
+export const current_table_path = "~/.current_table.nuon"
 
-# Define constants for the dynu table and item names
-export const table_name = "dynu"
-export const elm_name = "item"
+# Define a function to get the path to the file for a specified table
+export def get_dynu_path [table_name: string] {
+    $"~/.($table_name)_dynu.nuon"
+}
 
+# Define a function to get the path to the field names file for a specified table
+export def get_field_names_path [table_name: string] {
+    $"~/.($table_name)_fields.nuon"
+}
