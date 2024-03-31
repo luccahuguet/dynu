@@ -1,15 +1,19 @@
 # dynu/fields.nu
-export use constants.nu [get_dynu_path]
+export use constants.nu [get_dynu_path, is_debug_fields]
 export use tables.nu [get_current_table]
 
 # Define a function to get the field names from the current table
 export def get_field_names [] {
     let table_name = (get_current_table)
     let dynu_path = (get_dynu_path $table_name)
+    if $is_debug_fields { print $"Debug: Getting field names for table ($table_name) at path ($dynu_path)" }
     if not ($dynu_path | path exists) {
+        if $is_debug_fields { print "Debug: Table file does not exist" }
         []
     } else {
-        open $dynu_path | columns | sort
+        let field_names = (open $dynu_path | columns | sort)
+        if $is_debug_fields { print $"Debug: Field names: ($field_names)" }
+        $field_names
     }
 }
 
@@ -17,6 +21,7 @@ export def get_field_names [] {
 export def "add field" [field: string] {
     let table_name = (get_current_table)
     let dynu_path = (get_dynu_path $table_name)
+    if $is_debug_fields { print $"Debug: Adding field ($field) to table ($table_name) at path ($dynu_path)" }
     let table = (open $dynu_path)
     let new_table = ($table | each { |row| $row | insert $field null })
     $new_table | to nuon | save $dynu_path -f
@@ -27,6 +32,7 @@ export def "add field" [field: string] {
 export def "rm field" [field: string] {
     let table_name = (get_current_table)
     let dynu_path = (get_dynu_path $table_name)
+    if $is_debug_fields { print $"Debug: Removing field ($field) from table ($table_name) at path ($dynu_path)" }
     let table = (open $dynu_path)
     let new_table = ($table | each { |row| $row | reject $field })
     $new_table | to nuon | save $dynu_path -f
