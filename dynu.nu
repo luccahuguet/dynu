@@ -1,7 +1,7 @@
 # dynu/dynu.nu
 export use constants.nu [get_dynu_path]
 export use fields.nu [get_field_names]
-export use tables.nu [get_current_table, "add table", "ls tables", "rm table", set_current_table, ensure_current_table]
+export use tables.nu [get_current_table, "add table", "ls tables", "rm table", set_current_table, ensure_current_table, get_table_names]
 
 def interactive_construct_element [] {
     let table_name = (get_current_table)

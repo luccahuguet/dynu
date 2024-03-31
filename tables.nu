@@ -110,6 +110,11 @@ export def get_current_table [] {
 
 # Define a function to set the current table name
 export def set_current_table [table_name: string] {
-    print $"Setting current table to ($table_name)"
-    {current_table: $table_name} | to nuon | save $current_table_path -f
+    let tables = (get_table_names | get name)
+    if $table_name in $tables {
+        print $"Setting current table to ($table_name)"
+        {current_table: $table_name} | to nuon | save $current_table_path -f
+    } else {
+        print $"Table ($table_name) does not exist. Cannot set as current table."
+    }
 }
