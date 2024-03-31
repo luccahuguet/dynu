@@ -5,6 +5,8 @@ export use tables.nu [get_current_table, "add table", "ls tables", "rm table", s
 
 # To do: Add table titles
 # To do: Add table descriptions
+# To do: RM get_field_names_path
+
 def interactive_construct_element [] {
     let table_name = (get_current_table)
     let field_names = (get_field_names)
