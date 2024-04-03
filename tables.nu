@@ -62,7 +62,7 @@ export def ensure_current_table [] {
             set_current_table $first_table
             $first_table
         } else {
-            print $"Current table is set to ($current_table)"
+            print $"\nCurrent table: ($current_table)"
             $current_table
         }
     }

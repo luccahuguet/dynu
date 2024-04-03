@@ -1,15 +1,15 @@
 # dynu/dynu.nu
 export use constants.nu [get_dynu_path, is_debug_dynu]
-export use fields.nu [get_field_names]
+export use fields.nu ["ls fields", "add field", "rm field"]
 export use tables.nu [get_current_table, "add table", "ls tables", "rm table", set_current_table, ensure_current_table, get_table_names]
 
 # To do: Add table titles
 # To do: Add table descriptions
-# To do: RM get_field_names_path
+# To do: print current table name on table ls
 
 def interactive_construct_element [] {
     let table_name = (get_current_table)
-    let field_names = (get_field_names)
+    let field_names = (ls fields)
     if $is_debug_dynu { print $"Debug: Table name: ($table_name), Field names: ($field_names)" }
     let element = ($field_names | each { |field|
         let value = (input $"($field): ")
@@ -30,14 +30,9 @@ export def add [] {
     $final_table | to nuon | save $dynu_path -f
 }
 
-# Define a function to list the current dynu table items
-export def ls [] {
-    if $is_debug_dynu { print "Debug: Listing current dynu table items" }
-    ls_elms
-}
-
 # Define a function to read the current dynu table from the file
-export def ls_elms [] {
+def ls_elms [] {
+    if $is_debug_dynu { print "Debug: Listing current dynu table items" }
     let table_name = (ensure_current_table)
     let dynu_path = (get_dynu_path $table_name)
     if $is_debug_dynu { print $"Debug: Reading table ($table_name) from path ($dynu_path)" }
@@ -45,7 +40,7 @@ export def ls_elms [] {
 }
 
 # Define a function to remove an item from the current dynu table by index
-def table_rm [elm_idx: number] {
+export def "rm elm" [elm_idx: number] {
     let table_name = (ensure_current_table)
     let dynu_path = (get_dynu_path $table_name)
     if $is_debug_dynu { print $"Debug: Removing element at index ($elm_idx) from table ($table_name) at path ($dynu_path)" }
@@ -65,3 +60,5 @@ export def main [] {
     print "You can now manage dynamic persistent tables with ease."
     print "Type `dynu` and hit tab to see the available commands."
 }
+
+export alias ls = ls_elms

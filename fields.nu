@@ -3,7 +3,7 @@ export use constants.nu [get_dynu_path, is_debug_fields]
 export use tables.nu [get_current_table]
 
 # Define a function to get the field names from the current table
-export def get_field_names [] {
+export def "ls fields" [] {
     let table_name = (get_current_table)
     let dynu_path = (get_dynu_path $table_name)
     if $is_debug_fields { print $"Debug: Getting field names for table ($table_name) at path ($dynu_path)" }
