@@ -39,6 +39,23 @@ def ls_elms [] {
     open $dynu_path
 }
 
+# Define a function to edit an item in the current dynu table by index
+export def "edit elm" [elm_idx: number] {
+    let table_name = (ensure_current_table)
+    let dynu_path = (get_dynu_path $table_name)
+    if $is_debug_dynu { print $"Debug: Editing element at index ($elm_idx) in table ($table_name) at path ($dynu_path)" }
+    let table = (ls_elms)
+    let element = ($table | get $elm_idx)
+    let field_names = ($element | columns)
+    let updated_element = ($field_names | each { |field|
+        let current_value = ($element | get $field)
+        let new_value = (input $"($field) [($current_value)]: ")
+        if ($new_value | is-empty) { {($field): $current_value} } else { {($field): $new_value} }
+    } | reduce { |it, acc| $acc | merge $it } | default {})
+    let updated_table = ($table | update $elm_idx $updated_element)
+    $updated_table | to nuon | save $dynu_path -f
+}
+
 # Define a function to remove an item from the current dynu table by index
 export def "rm elm" [elm_idx: number] {
     let table_name = (ensure_current_table)
