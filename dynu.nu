@@ -26,8 +26,8 @@ export def add [] {
     let element = (interactive_construct_element)
     let final_table = (ls_elms | append $element)
     if $is_debug_dynu { print $"Debug: Final table: ($final_table)" }
-    echo $" the final table is ($final_table)"
     $final_table | to nuon | save $dynu_path -f
+    ls_elms
 }
 
 # Define a function to read the current dynu table from the file
