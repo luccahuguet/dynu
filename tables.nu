@@ -106,7 +106,7 @@ export def get_current_table [] {
         ""
     } else {
         if $is_debug_tables { print $"Debug: Reading current table from ($current_table_path)" }
-        let content = (open $current_table_path)
+        let content = ($current_table_path | open)
         if ($content | is-empty) {
             print "Current table file is empty"
             ""

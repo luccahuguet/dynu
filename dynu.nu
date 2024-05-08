@@ -7,6 +7,7 @@ export use tables.nu [ensure_current_table, get_table_names, table_name, dynu_pa
 # To do: Add table titles
 # To do: Add table descriptions
 # To do: print current table name on table ls
+# To do: create a dir to save every file used by dynu
 export def apply_color [color: string, str: string] { $"(ansi $color)($str)(ansi reset)" }
 
 def interactive_construct_element [] {
@@ -33,7 +34,7 @@ export def add [] {
 def ls_elms [--show] -> table {
     if $is_debug_dynu { print "Debug: Listing current dynu table items" }
     if $is_debug_dynu { print $"Debug: Reading table (table_name) from path (dynu_path)" }
-    if $show {color_by_grade (open (dynu_path))} else {open (dynu_path)}
+    if $show {color_by_grade ((dynu_path) | open)} else {(dynu_path) | open}
 }
 
 def color_by_grade [table] {
