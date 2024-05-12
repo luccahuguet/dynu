@@ -49,7 +49,7 @@ export def get_table_names [] {
 export def display_table_names [tables: table] {
     if $is_debug_tables { print $"Debug: Displaying table names: ($tables)" }
     print $"Existing tables: "
-    echo ($tables | table)
+    print ($tables | table)
 }
 
 # Define a function to ensure a current table exists, prompting the user to create one if necessary
