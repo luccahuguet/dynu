@@ -1,8 +1,8 @@
 # dynu/dynu.nu
 export use constants.nu [is_debug_dynu]
 export use fields.nu ["ls fields", "add field", "rm field"]
-export use tables.nu [get_current_table, "add table", "ls tables", "rm table", set_current_table]
-export use tables.nu [ensure_current_table, get_table_names, table_name, dynu_path]
+export use tables.nu [get_current_table_name, add_table, ls_tables, rm_table, set_current_table]
+export use tables.nu [ensure_current_table, get_table_names, table_name, get_current_table_path]
 
 # To do: Add table titles
 # To do: Add table descriptions
@@ -22,7 +22,7 @@ def interactive_construct_element [] {
 
 # Define a function to add a new item to the current dynu table
 export def add [] {
-    if $is_debug_dynu { print $"Debug: Adding element to table (table_name) at path (dynu_path)" }
+    if $is_debug_dynu { print $"Debug: Adding element to table (table_name) at path (get_current_table_path)" }
     let element = (interactive_construct_element)
     let updated_table: table = (ls_elms | append $element)
     if $is_debug_dynu { print $"Debug: Final table: ($updated_table)" }
@@ -33,8 +33,8 @@ export def add [] {
 # Define a function to read the current dynu table from the file
 def ls_elms [--show] -> table {
     if $is_debug_dynu { print "Debug: Listing current dynu table items" }
-    if $is_debug_dynu { print $"Debug: Reading table (table_name) from path (dynu_path)" }
-    if $show {color_by_grade ((dynu_path) | open)} else {(dynu_path) | open}
+    if $is_debug_dynu { print $"Debug: Reading table (table_name) from path (get_current_table_path)" }
+    if $show {color_by_grade ((get_current_table_path) | open)} else {(get_current_table_path) | open}
 }
 
 def color_by_grade [table] {
@@ -60,7 +60,7 @@ def color_by_grade [table] {
 
 # Define a function to edit an item in the current dynu table by index
 export def "edit elm" [elm_idx: number] {
-    if $is_debug_dynu { print $"Debug: Editing element at index ($elm_idx) in table (table_name) at path (dynu_path)" }
+    if $is_debug_dynu { print $"Debug: Editing element at index ($elm_idx) in table (table_name) at path (get_current_table_path)" }
     let table = (ls_elms)
     let element = ($table | get $elm_idx)
     let field_names = ($element | columns)
@@ -85,21 +85,21 @@ def save_sort_show [table, field: string] -> table {
         $table
     }
     if $is_debug_dynu { print $"Debug: Sorted table: ($sorted_table)" }
-    $sorted_table | to nuon | save (dynu_path) -f
+    $sorted_table | to nuon | save (get_current_table_path) -f
     ls_elms --show
 }
 
 # Define a function to remove an item from the current dynu table by index
 export def "rm elm" [elm_idx: number] {
-    if $is_debug_dynu { print $"Debug: Removing element at index ($elm_idx) from table (table_name) at path (dynu_path)" }
-    ls_elms | drop nth $elm_idx | to nuon | save (dynu_path) -f
+    if $is_debug_dynu { print $"Debug: Removing element at index ($elm_idx) from table (table_name) at path (get_current_table_path)" }
+    ls_elms | drop nth $elm_idx | to nuon | save (get_current_table_path) -f
     ls_elms --show
 }
 
 # Define a function to purge the current dynu table
 export def purge [] {
-    if $is_debug_dynu { print $"Debug: Purging table (table_name) at path (dynu_path)" }
-    [] | to nuon | save (dynu_path) -f
+    if $is_debug_dynu { print $"Debug: Purging table (table_name) at path (get_current_table_path)" }
+    [] | to nuon | save (get_current_table_path) -f
 }
 
 export def main [] {
