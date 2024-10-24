@@ -31,7 +31,7 @@ export def add [] {
 }
 
 # Define a function to read the current dynu table from the file
-def ls_elms [--show] -> table {
+export def ls_elms [--show] -> table {
     if $is_debug_dynu { print "Debug: Listing current dynu table items" }
     if $is_debug_dynu { print $"Debug: Reading table (table_name) from path (get_current_table_path)" }
     if $show {color_by_grade ((get_current_table_path) | open)} else {(get_current_table_path) | open}
@@ -62,6 +62,7 @@ def color_by_grade [table] {
 export def "edit elm" [elm_idx: number] {
     if $is_debug_dynu { print $"Debug: Editing element at index ($elm_idx) in table (table_name) at path (get_current_table_path)" }
     let table = (ls_elms)
+    # let element = ($table | enumerate | get $elm_idx)
     let element = ($table | get $elm_idx)
     let field_names = ($element | columns)
     let updated_element = ($field_names | each { |field|
