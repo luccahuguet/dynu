@@ -15,10 +15,9 @@ $env.HOME = $test_home
 
 echo "Using HOME = ($env.HOME) for dynu tests"
 
-# Run core.nu tests
+// Run core.nu tests
 echo "Running core.nu tests..."
-pushd tests
-source core_tests.nu
-popd
+let core_test_script = $cwd + "/tests/core_tests.nu"
+source $core_test_script
 
 echo "All tests passed!"
