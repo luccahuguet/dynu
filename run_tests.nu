@@ -20,4 +20,8 @@ echo "Running core.nu tests..."
 # Source the core test script
 source tests/core_tests.nu
 
+# Run user integration tests
+echo "Running user integration tests..."
+source tests/user_tests.nu
+
 echo "All tests passed!"
