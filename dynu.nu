@@ -82,7 +82,6 @@ export def "edit elm" [elm_idx: number] {
 }
 
 export def save_sort_show [table: table, field: string] {
-export def save_sort_show [table: table, field: string] {
     if $is_debug_dynu { print $"Debug: Sorting table by field ($field)" }
     let sorted = core_sort_by table field true
     if $is_debug_dynu { print $"Debug: Sorted table: ($sorted)" }
