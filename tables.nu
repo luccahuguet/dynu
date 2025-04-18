@@ -1,13 +1,13 @@
 export use constants.nu [current_table_path_store_file, is_debug_tables, dynu_dir, table_file_suffix]
 
 # Returns the path of the current table file
-def get_current_table_path [] {
+export def get_current_table_path [] {
     let table_name = get_current_table_name
     $"($dynu_dir)/($table_name)$(table_file_suffix)"
 }
 
 # Alias for get_current_table_name
-def table_name [] { get_current_table_name }
+export def table_name [] { get_current_table_name }
 
 # Creates a new table with an initial field and value
 def add_table [new_table_name: string] {
