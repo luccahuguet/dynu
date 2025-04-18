@@ -1,36 +1,41 @@
-export use constants.nu [ current_table_path_store_file, is_debug_tables, dynu_dir]
+export use constants.nu [current_table_path_store_file, is_debug_tables, dynu_dir, table_file_suffix]
 
 # Returns the path of the current table file
 export def get_current_table_path [] {
     let table_name = get_current_table_name
-    $"($dynu_dir)/($table_name)_dynu.nuon"
+    $"($dynu_dir)/($table_name)$(table_file_suffix)"
 }
 
 # Alias for get_current_table_name
 export def table_name [] {get_current_table_name}
 
 # Creates a new table with an initial field and value
-export def add_table [new_table_name: string] { 
-    if not ($"($dynu_dir)/($new_table_name).nuon" | path exists) {
+export def add_table [new_table_name: string] {
+    let file_path = $"($dynu_dir)/($new_table_name)$(table_file_suffix)"
+    if not ($file_path | path exists) {
         let field_name = (input "Enter the name of the field: ")
         let field_value = (input "Enter the value for the field: ")
         let initial_data = ({$field_name: $field_value} | to nuon)
-        $initial_data | save $"($dynu_dir)/($new_table_name)_dynu.nuon" -f
+        $initial_data | save $file_path -f
         set_current_table $new_table_name
-        $new_table_name
-    } else {
-        $new_table_name
     }
+    $new_table_name
 }
 
 # Retrieves all table names from the dynu directory
 export def get_table_names [] {
-    let dynu_filenames = (glob $"($dynu_dir)/*.nuon" | where ($it | str ends-with "_dynu.nuon"))
+    let pattern = $"($dynu_dir)/*$(table_file_suffix)"
+    let dynu_filenames = (glob $pattern)
     if ($dynu_filenames | is-empty) {
         []
     } else {
         $dynu_filenames | each { |filename|
-            let table_name: string = ($filename | parse "/home/lucca/.dynu/{name}_dynu.nuon" | get name | get 0)
+            let table_name: string = (
+                $filename
+                | parse $"($dynu_dir)/{{name}}$(table_file_suffix)"
+                | get name
+                | get 0
+            )
             {name: $table_name}
         }
     }
@@ -74,8 +79,9 @@ export def ls_tables [] {
 
 # Removes a specified table
 export def rm_table [table_name: string] {
-    if ((get_current_table_path) | path exists) {
-        rm (get_current_table_path)
+    let file_path = $"($dynu_dir)/($table_name)$(table_file_suffix)"
+    if ($file_path | path exists) {
+        rm $file_path
         print $"Removed table ($table_name)"
     } else {
         print $"Table ($table_name) does not exist"

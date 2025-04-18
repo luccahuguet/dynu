@@ -31,10 +31,15 @@ export def add [] {
 }
 
 # Define a function to read the current dynu table from the file
-export def ls_elms [--show] -> table {
+export def ls_elms [--show] {
     if $is_debug_dynu { print "Debug: Listing current dynu table items" }
     if $is_debug_dynu { print $"Debug: Reading table (table_name) from path (get_current_table_path)" }
-    if $show {color_by_grade ((get_current_table_path) | open)} else {(get_current_table_path) | open}
+    let table_data = (get_current_table_path) | open
+    if $show {
+        color_by_grade $table_data
+    } else {
+        $table_data
+    }
 }
 
 def color_by_grade [table] {
@@ -74,7 +79,7 @@ export def "edit elm" [elm_idx: number] {
     save_sort_show $updated_table "grade"
 }
 
-def save_sort_show [table, field: string] -> table {
+export def save_sort_show [table: table, field: string] {
     if $is_debug_dynu { print $"Debug: Sorting table by field ($field)" }
     let field_names = ($table | columns)
     let sorted_table = if $field in $field_names {
@@ -109,4 +114,3 @@ export def main [] {
     print "Type `dynu` and hit tab to see the available commands."
 }
 
-export alias ls = ls_elms --show
