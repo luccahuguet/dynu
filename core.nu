@@ -8,7 +8,12 @@ export def core_add [table: table, element: record] {
 
 export def core_sort_by [table: table, field: string, reverse: bool] {
     if $field in ($table | columns) {
-        if $reverse { $table | sort-by $field --reverse } else { $table | sort-by $field }
+        let sorter = {|row| row | get $field}
+        if $reverse {
+            $table | sort-by $sorter --reverse
+        } else {
+            $table | sort-by $sorter
+        }
     } else {
         $table
     }
