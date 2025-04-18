@@ -1,7 +1,12 @@
 # dynu/fields.nu
 export use constants.nu [is_debug_fields]
 export use tables.nu [get_current_table_name, table_name, get_current_table_path]
-export use core.nu [core_add_field, core_remove_field]
+    export use core.nu [core_add_field, core_remove_field]
+
+# Aliases for testing (snake_case)
+alias ls_fields = ls fields
+alias add_field = add field
+alias rm_field = rm field
 
 
 

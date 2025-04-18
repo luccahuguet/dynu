@@ -29,7 +29,7 @@ export def add [] {
     let updated_table = (core_add $table $element)
     if $is_debug_dynu { print $"Debug: Final table: ($updated_table)" }
     print $"Element added to table (table_name)"
-    save_sort_show updated_table "grade"
+    save_sort_show $updated_table "grade"
 }
 
 # Define a function to read the current dynu table from the file
@@ -78,14 +78,14 @@ export def "edit elm" [elm_idx: number] {
         if ($new_value | is-empty) { {($field): $current_value} } else { {($field): $new_value} }
     } | reduce { |it, acc| $acc | merge $it } | default {})
     let updated_table = (core_update_at $table $elm_idx $updated_element)
-    save_sort_show updated_table "grade"
+    save_sort_show $updated_table "grade"
 }
 
 export def save_sort_show [table: table, field: string] {
     if $is_debug_dynu { print $"Debug: Sorting table by field ($field)" }
-    let sorted = core_sort_by table field true
+    let sorted = (core_sort_by $table $field true)
     if $is_debug_dynu { print $"Debug: Sorted table: ($sorted)" }
-    sorted | to nuon | save (get_current_table_path) -f
+    $sorted | to nuon | save (get_current_table_path) -f
     ls_elms --show
 }
 
@@ -94,7 +94,7 @@ export def "rm elm" [elm_idx: number] {
     if $is_debug_dynu { print $"Debug: Removing element at index ($elm_idx) from table (table_name) at path (get_current_table_path)" }
     let table = ls_elms
     let updated_table = (core_remove_at $table $elm_idx)
-    save_sort_show updated_table "grade"
+    save_sort_show $updated_table "grade"
 }
 
 # Define a function to purge the current dynu table
@@ -111,3 +111,7 @@ export def main [] {
     print "Type `dynu` and hit tab to see the available commands."
 }
 
+
+# Aliases for testing (snake_case)
+alias edit_elm = edit elm
+alias rm_elm = rm elm

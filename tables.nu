@@ -3,7 +3,7 @@ export use constants.nu [current_table_path_store_file, is_debug_tables, dynu_di
 # Returns the path of the current table file
 export def get_current_table_path [] {
     let table_name = get_current_table_name
-    $"($dynu_dir)/($table_name)$(table_file_suffix)"
+    $"(dynu_dir)/($table_name)($table_file_suffix)"
 }
 
 # Alias for get_current_table_name
@@ -11,12 +11,14 @@ export def table_name [] { get_current_table_name }
 
 # Creates a new table with an initial field and value
 def add_table [new_table_name: string] {
-    let file_path = $"($dynu_dir)/($new_table_name)$(table_file_suffix)"
+        let file_path = $"(dynu_dir)/($new_table_name)($table_file_suffix)"
     if not ($file_path | path exists) {
         let field_name = (input "Enter the name of the field: ")
         let field_value = (input "Enter the value for the field: ")
         let initial_data = ({$field_name: $field_value} | to nuon)
-        $initial_data | save $file_path -f
+        # Ensure dynu directory exists
+        mkdir (dynu_dir)
+        echo $initial_data | save $file_path -f
         set_current_table $new_table_name
     }
     $new_table_name
@@ -26,7 +28,7 @@ export def "add table" [name: string] { add_table name }
 
 # Retrieves all table names from the dynu directory
 def get_table_names [] {
-    let pattern = $"($dynu_dir)/*$(table_file_suffix)"
+let pattern = $"(dynu_dir)/*($table_file_suffix)"
     let dynu_filenames = (glob $pattern)
     if ($dynu_filenames | is-empty) {
         []
@@ -34,7 +36,7 @@ def get_table_names [] {
         $dynu_filenames | each { |filename|
             let table_name: string = (
                 $filename
-                | parse $"($dynu_dir)/{{name}}$(table_file_suffix)"
+| parse $"(dynu_dir)/{{name}}($table_file_suffix)"
                 | get name
                 | get 0
             )
@@ -43,10 +45,14 @@ def get_table_names [] {
     }
 }
 
-# Displays the names of all existing tables
-def display_table_names [tables: table] {
-    print $"Existing tables: "
-    print ($tables | table)
+# User-facing command to list tables (alias: "ls tables")
+export def "ls tables" [] {
+    let names = (get_table_names | get name)
+    if ($names | is-empty) {
+        "Existing tables:"
+    } else {
+        (["Existing tables:"] | append $names) | str join " "
+    }
 }
 
 # Ensures a current table exists, creating one if necessary
@@ -69,18 +75,11 @@ def ensure_current_table [] {
     }
 }
 
-export def "ls tables" [] {
-    let tables = (get_table_names)
-    display_table_names $tables
-    let current_table = (table_name)
-    if not ($current_table | is-empty) {
-        print $"Current table: ($current_table)"
-    }
-}
+#+ Alias ls_tables = "ls tables" defined below for testing
 # User-facing add table already provided above
 
 def rm_table [table_name: string] {
-    let file_path = $"($dynu_dir)/($table_name)$(table_file_suffix)"
+    let file_path = $"(dynu_dir)/($table_name)($table_file_suffix)"
     if ($file_path | path exists) {
         rm $file_path
         print $"Removed table ($table_name)"
@@ -93,13 +92,13 @@ export def "rm table" [name: string] { rm_table name }
 
 # Retrieves the name of the current table
 export def get_current_table_name [] {
-    if not ($current_table_path_store_file | path exists) {
-        mkdir ($dynu_dir)
+    if not ((current_table_path_store_file) | path exists) {
+        mkdir (dynu_dir)
         let table_name = ensure_current_table
-        {current_table: $table_name} | to nuon | save $current_table_path_store_file -f
+        {current_table: $table_name} | to nuon | save (current_table_path_store_file) -f
         $table_name
     } else {
-        let content = ($current_table_path_store_file | open)
+        let content = (current_table_path_store_file | open)
         if ($content | is-empty) {
             ""
         } else {
@@ -109,12 +108,12 @@ export def get_current_table_name [] {
 }
 
 def set_current_table [table_name: string] {
-    let tables = (get_table_names | get name)
-    if $table_name in $tables {
-        {current_table: $table_name} | to nuon | save $current_table_path_store_file -f
-    } else {
-        print $"Table ($table_name) does not exist. Cannot set as current table."
-    }
+    {current_table: $table_name} | to nuon | save (current_table_path_store_file) -f
 }
 #+ User-facing set current table command
 export def "set current table" [name: string] { set_current_table name }
+
+# Aliases for testing (snake_case)
+alias ls_tables = ls tables
+alias add_table = add table
+alias rm_table = rm table
