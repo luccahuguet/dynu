@@ -45,6 +45,6 @@ if (($fadded | get 0 | get b) != null) { fail "core_add_field failed: expected n
 
 # core_remove_field
 let fremoved = (core_remove_field $fadded "a")
-if (($fremoved | get 0 | get a) != null) { fail "core_remove_field failed: expected field 'a' removed" } else { echo "core_remove_field passed" }
+if ("a" in ($fremoved | get 0 | columns)) { fail "core_remove_field failed: field 'a' still present" } else { echo "core_remove_field passed" }
 
 echo "All core.nu tests passed"
