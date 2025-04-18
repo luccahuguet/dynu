@@ -11,9 +11,9 @@ rm --recursive --force $test_home
 
 # Create fresh test home and set HOME env var
 mkdir $test_home
-let-env HOME = $test_home
+$env.HOME = $test_home
 
-echo "Using HOME = ($HOME) for dynu tests"
+echo "Using HOME = ($env.HOME) for dynu tests"
 
 # Run core.nu tests
 echo "Running core.nu tests..."
