@@ -1,8 +1,8 @@
 # dynu/dynu.nu
 export use constants.nu [is_debug_dynu]
 export use fields.nu ["ls fields", "add field", "rm field"]
-export use tables.nu [get_current_table_name, add_table, ls_tables, rm_table, set_current_table]
-export use tables.nu [ensure_current_table, get_table_names, table_name, get_current_table_path]
+export use tables.nu ["add table", "ls tables", "rm table"]
+use tables.nu [table_name, get_current_table_path]
 export use core.nu [core_add, core_sort_by, core_remove_at, core_update_at, core_purge]
 
 # To do: Add table titles
