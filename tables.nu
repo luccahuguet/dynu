@@ -1,16 +1,16 @@
 export use constants.nu [current_table_path_store_file, is_debug_tables, dynu_dir, table_file_suffix]
 
 # Returns the path of the current table file
-export def get_current_table_path [] {
+def get_current_table_path [] {
     let table_name = get_current_table_name
     $"($dynu_dir)/($table_name)$(table_file_suffix)"
 }
 
 # Alias for get_current_table_name
-export def table_name [] {get_current_table_name}
+def table_name [] { get_current_table_name }
 
 # Creates a new table with an initial field and value
-export def add_table [new_table_name: string] {
+def add_table [new_table_name: string] {
     let file_path = $"($dynu_dir)/($new_table_name)$(table_file_suffix)"
     if not ($file_path | path exists) {
         let field_name = (input "Enter the name of the field: ")
@@ -23,7 +23,7 @@ export def add_table [new_table_name: string] {
 }
 
 # Retrieves all table names from the dynu directory
-export def get_table_names [] {
+def get_table_names [] {
     let pattern = $"($dynu_dir)/*$(table_file_suffix)"
     let dynu_filenames = (glob $pattern)
     if ($dynu_filenames | is-empty) {
@@ -42,13 +42,13 @@ export def get_table_names [] {
 }
 
 # Displays the names of all existing tables
-export def display_table_names [tables: table] {
+def display_table_names [tables: table] {
     print $"Existing tables: "
     print ($tables | table)
 }
 
 # Ensures a current table exists, creating one if necessary
-export def ensure_current_table [] {
+def ensure_current_table [] {
     let tables = (get_table_names)
     if ($tables | is-empty) {
         print "No tables found. Please create a new table."
@@ -67,8 +67,7 @@ export def ensure_current_table [] {
     }
 }
 
-# Lists all existing tables and shows the current table
-export def ls_tables [] {
+export def "ls tables" [] {
     let tables = (get_table_names)
     display_table_names $tables
     let current_table = (table_name)
@@ -77,8 +76,7 @@ export def ls_tables [] {
     }
 }
 
-# Removes a specified table
-export def rm_table [table_name: string] {
+def rm_table [table_name: string] {
     let file_path = $"($dynu_dir)/($table_name)$(table_file_suffix)"
     if ($file_path | path exists) {
         rm $file_path
@@ -105,8 +103,7 @@ export def get_current_table_name [] {
     }
 }
 
-# Sets the current table name
-export def set_current_table [table_name: string] {
+def set_current_table [table_name: string] {
     let tables = (get_table_names | get name)
     if $table_name in $tables {
         {current_table: $table_name} | to nuon | save $current_table_path_store_file -f
