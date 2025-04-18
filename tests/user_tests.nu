@@ -3,12 +3,12 @@
 # Integration tests emulating a user for dynu CLI
 
 # Stub input for interactive commands
-let-env TEST_INPUTS = ["field1" "value1" "val1" "edited1"]
-let-env CALL_INDEX = 0
+let TEST_INPUTS = ["field1" "value1" "val1" "edited1"]
+let CALL_INDEX = 0
 def input [prompt: string] {
-    let idx = ($env.CALL_INDEX | into int)
-    let val = ($env.TEST_INPUTS | get idx)
-    let-env CALL_INDEX = ($env.CALL_INDEX | into int | math + 1)
+    let idx = ($CALL_INDEX | into int)
+    let val = ($TEST_INPUTS | get idx)
+    let CALL_INDEX = ($CALL_INDEX | into int | math + 1)
     echo $val
 }
 
