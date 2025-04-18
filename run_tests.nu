@@ -2,8 +2,8 @@
 
 # Automated test runner for dynu project (Nushell)
 
-# Determine temporary home directory under tests
-let cwd = $nu.pwd
+// Determine temporary home directory under project root
+let cwd = (pwd)
 let test_home = $cwd + "/tests/tmp_home"
 
 # Clean up previous test home
