@@ -2,7 +2,7 @@
 
 # Automated test runner for dynu project (Nushell)
 
-// Determine temporary home directory under project root
+# Determine temporary home directory under project root
 let cwd = (pwd)
 let test_home = $cwd + "/tests/tmp_home"
 
@@ -15,7 +15,7 @@ $env.HOME = $test_home
 
 echo "Using HOME = ($env.HOME) for dynu tests"
 
-// Run core.nu tests
+# Run core.nu tests
 echo "Running core.nu tests..."
 # Source the core test script
 source tests/core_tests.nu
