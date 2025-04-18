@@ -8,7 +8,7 @@ let CALL_INDEX = 0
 def input [prompt: string] {
     let idx = ($CALL_INDEX | into int)
     let val = ($TEST_INPUTS | get idx)
-    let CALL_INDEX = ($CALL_INDEX | into int | math + 1)
+    let CALL_INDEX = ($CALL_INDEX + 1)
     echo $val
 }
 
