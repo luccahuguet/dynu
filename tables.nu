@@ -21,6 +21,8 @@ def add_table [new_table_name: string] {
     }
     $new_table_name
 }
+#+ User-facing add table command
+export def "add table" [name: string] { add_table name }
 
 # Retrieves all table names from the dynu directory
 def get_table_names [] {
@@ -75,6 +77,7 @@ export def "ls tables" [] {
         print $"Current table: ($current_table)"
     }
 }
+# User-facing add table already provided above
 
 def rm_table [table_name: string] {
     let file_path = $"($dynu_dir)/($table_name)$(table_file_suffix)"
@@ -85,6 +88,8 @@ def rm_table [table_name: string] {
         print $"Table ($table_name) does not exist"
     }
 }
+#+ User-facing rm table command
+export def "rm table" [name: string] { rm_table name }
 
 # Retrieves the name of the current table
 export def get_current_table_name [] {
@@ -111,3 +116,5 @@ def set_current_table [table_name: string] {
         print $"Table ($table_name) does not exist. Cannot set as current table."
     }
 }
+#+ User-facing set current table command
+export def "set current table" [name: string] { set_current_table name }
