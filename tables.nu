@@ -11,24 +11,20 @@ export def get_current_table_path [] {
 export def table_name [] { get_current_table_name }
 
 # Creates a new table with an initial field and value
-def add_table [new_table_name: string] {
+def add_table [new_table_name: string, init_field: string, init_value: string] {
     # Build path for the new table file
     let file_path = (dynu_dir) + "/" + $new_table_name + $table_file_suffix
     if not ($file_path | path exists) {
-        let field_name = (input "Enter the name of the field: ")
-        let field_value = (input "Enter the value for the field: ")
-        # Create initial table with a single record
-        let initial_row = { ($field_name): $field_value }
-        # Ensure dynu directory exists and save as JSON
+        # Create initial table with a single record using provided field and value
+        let initial_row = { ($init_field): $init_value }
         mkdir (dynu_dir)
-        # Serialize initial row to JSON and save
         [ $initial_row ] | to json --raw | save $file_path -f
         set_current_table $new_table_name
     }
     $new_table_name
 }
-#+ User-facing add table command
-export def "add table" [name: string] { add_table $name }
+# User-facing add table command without interactive input
+export def "add table" [name: string, field: string, value: string] { add_table $name $field $value }
 
 # Retrieves all table names from the dynu directory
 def get_table_names [] {
@@ -74,22 +70,20 @@ export def "ls tables" [] {
     }
 }
 
-# Ensures a current table exists, creating one if necessary
+# Ensures a current table exists, returning an existing or first table without interactive input
 def ensure_current_table [] {
     let tables = (get_table_names)
     if ($tables | is-empty) {
-        print "No tables found. Please create a new table."
-        let new_table_name = (input "Enter the name of the new table: ")
-        add_table $new_table_name
+        # No tables exist; return empty
+        ""
     } else {
-        let current_table = (table_name)
-        if ($current_table | is-empty) {
-            print "No current table set. Setting the first table as current."
-            let first_table = ($tables | first).name
-            set_current_table $first_table
-            $first_table
+        let current = (table_name)
+        if ($current | is-empty) {
+            let first = ($tables | first)
+            set_current_table $first
+            $first
         } else {
-            $current_table
+            $current
         }
     }
 }

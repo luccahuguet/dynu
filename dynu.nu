@@ -7,19 +7,11 @@ export use core.nu [core_add, core_sort_by, core_remove_at, core_update_at, core
 
 export def apply_color [color: string, str: string] { $"(ansi $color)($str)(ansi reset)" }
 
-def interactive_construct_element [] {
-    let field_names = (ls fields)
-    if $is_debug_dynu { print $"Debug: Table name: (table_name), Field names: ($field_names)" }
-    # Prompt for only the first field; supports single-field tables
-    let field = ($field_names | first)
-    let value = (input $"($field): ")
-    if ($value | is-empty) { {($field): null} } else { {($field): $value} }
-}
 
-# Define a function to add a new item to the current dynu table
-export def add [] {
+# Define a function to add a new item to the current dynu table without interactive input
+export def add [field: string, value: string] {
     if $is_debug_dynu { print $"Debug: Adding element to table (table_name) at path (get_current_table_path)" }
-    let element = interactive_construct_element
+    let element = { ($field): $value }
     let table = ls_elms
     let updated_table = (core_add $table $element)
     if $is_debug_dynu { print $"Debug: Final table: ($updated_table)" }
@@ -35,13 +27,14 @@ export def ls_elms [--show] {
     $table_data
 }
 
-# Define a function to edit an item in the current dynu table by index
-export def "edit elm" [elm_idx: number] {
+# Define a function to edit an item in the current dynu table by index without interactive input
+export def "edit elm" [elm_idx: number, field: string, value: string] {
     if $is_debug_dynu { print $"Debug: Editing element at index ($elm_idx) in table (table_name) at path (get_current_table_path)" }
-    # Remove the existing element
-    rm elm $elm_idx
-    # Add the new element interactively
-    add
+    let table = ls_elms
+    let updated_table = (core_update_at $table $elm_idx {($field): $value})
+    if $is_debug_dynu { print $"Debug: Updated table: ($updated_table)" }
+    print $"Element at index ($elm_idx) updated in table (table_name)"
+    save_sort_show $updated_table "name"
 }
 
 export def save_sort_show [table: table, field: string] {

@@ -2,17 +2,7 @@
 
 # Integration tests emulating a user for dynu CLI
 
-# Stub input for interactive commands
-
-# Stub input for interactive commands
-let TEST_INPUTS = ["field1" "value1" "val1" "edited1"]
-$env.CALL_INDEX = 0
-def input [prompt: string] {
-    let idx = ($env.CALL_INDEX | into int)
-    let val = ($TEST_INPUTS | get $idx)
-    $env.CALL_INDEX = ($env.CALL_INDEX + 1)
-    echo $val
-}
+# Integration tests for dynu CLI
 use std/assert
 
 
@@ -30,8 +20,8 @@ echo "Testing table commands..."
 let init = (ls_tables)
 assert str contains $init "Existing tables"
 
-# 2. Add table 'tbl'
-let added = (add_table tbl)
+# 2. Add table 'tbl' with initial field and value
+let added = (add_table tbl field1 value1)
 
 # 3. ls tables shows 'tbl'
 let after_ls = (ls_tables)
@@ -54,12 +44,14 @@ assert (not (($fields2_str | str contains "newfield")))
 echo "Testing dynu element commands..."
 
 # 6. Add element
-add
+let data_before = (($env.HOME + "/.dynu/tbl_dynu.json") | open)
+assert equal ($data_before | length) 1
+add field1 val1
 let data1 = (($env.HOME + "/.dynu/tbl_dynu.json") | open)
 assert equal ($data1 | length) 2
 
 # 7. Edit element at index 1
-edit_elm 1
+edit_elm 1 field1 edited1
 let edited = (($env.HOME + "/.dynu/tbl_dynu.json") | open)
 assert equal ($edited | get 1 | get field1) "edited1"
 
