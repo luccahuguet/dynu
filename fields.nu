@@ -6,8 +6,8 @@ export use tables.nu [get_current_table_name, table_name, get_current_table_path
 
 
 
-# Define a function to get the field names from the current table
-export def "ls fields" [] {
+#+ Define a function to get the field names from the current table (shortened: "ls fls")
+export def "ls fls" [] {
     if $is_debug_fields { print $"Debug: Getting field names for table (table_name) at path (get_current_table_path)" }
     if not ((get_current_table_path) | path exists) {
         if $is_debug_fields { print "Debug: Table file does not exist" }
@@ -21,8 +21,8 @@ export def "ls fields" [] {
     }
 }
 
-# Define a function to add a new field to the current table
-export def "add field" [field: string] {
+#+ Define a function to add a new field to the current table (shortened: "a fl")
+export def "a fl" [field: string] {
     if $is_debug_fields { print $"Debug: Adding field ($field) to table (table_name) at path (get_current_table_path)" }
     # Read the current table file as JSON
     # Read and parse the current table JSON
@@ -34,8 +34,8 @@ export def "add field" [field: string] {
     echo $"Added field ($field) to table (table_name)"
 }
 
-# Define a function to remove a field from the current table
-export def "rm field" [field: string] {
+#+ Define a function to remove a field from the current table (shortened: "d fl")
+export def "d fl" [field: string] {
     if $is_debug_fields { print $"Debug: Removing field ($field) from table (table_name) at path (get_current_table_path)" }
     # Read the current table file as JSON
     # Read and parse the current table JSON
@@ -47,7 +47,4 @@ export def "rm field" [field: string] {
     echo $"Removed field ($field) from table (table_name)"
 }
  
-# Aliases for testing (snake_case)
-alias ls_fields = ls fields
-alias add_field = add field
-alias rm_field = rm field
+# Removed old aliases: ls_fields, add_field, rm_field; use short commands (ls fls, a fl, d fl)

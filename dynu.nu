@@ -1,7 +1,7 @@
 # dynu/dynu.nu
 export use constants.nu [is_debug_dynu]
-export use fields.nu ["ls fields", "add field", "rm field"]
-export use tables.nu ["add table", "list", "rm table", "set table"]
+export use fields.nu ["ls fls", "a fl", "d fl"]
+export use tables.nu ["a tb", "ls tbs", "d tb", "set tb"]
 use tables.nu [table_name, get_current_table_path]
 export use core.nu [core_add, core_sort_by, core_remove_at, core_update_at, core_purge]
 
@@ -9,7 +9,7 @@ export def apply_color [color: string, str: string] { $"(ansi $color)($str)(ansi
 
 
 # Define a function to add a new item to the current dynu table without interactive input
-export def add [field: string, value: string] {
+export def a [field: string, value: string] {
     if $is_debug_dynu { print $"Debug: Adding element to table (table_name) at path (get_current_table_path)" }
     let element = { ($field): $value }
     # Read current elements
@@ -29,7 +29,7 @@ export def els [--show] {
 }
 
 # Define a function to edit an item in the current dynu table by index and field
-export def "e elm" [elm_idx: number, field: string, value: string] {
+export def "e el" [elm_idx: number, field: string, value: string] {
     if $is_debug_dynu { print $"Debug: Editing element at index ($elm_idx) in table (table_name) at path (get_current_table_path)" }
     let table = els
     # Retrieve existing element by index
@@ -56,7 +56,7 @@ export def save_sort_show [table: table, field: string] {
 }
 
 # Define a function to remove an item from the current dynu table by index
-export def "rm elm" [elm_idx: number] {
+export def "d el" [elm_idx: number] {
     if $is_debug_dynu { print $"Debug: Removing element at index ($elm_idx) from table (table_name) at path (get_current_table_path)" }
     let table = els
     let updated_table = (core_remove_at $table $elm_idx)
@@ -64,7 +64,7 @@ export def "rm elm" [elm_idx: number] {
 }
 
 # Define a function to purge the current dynu table
-export def purge [] {
+export def "purge tb" [] {
     if $is_debug_dynu { print $"Debug: Purging table (table_name) at path (get_current_table_path)" }
     let table = els
     let updated_table = (core_purge $table)
@@ -75,11 +75,10 @@ export def purge [] {
 }
 
 export def main [] {
-    print (list)
+    print (ls tbs)
     print $"Current table: (table_name)"
 }
 
 
 # Aliases for testing (snake_case)
-alias edit_elm = e elm
-alias rm_elm = rm elm
+// Removed old aliases: edit_elm, rm_elm; use short commands (a, e el, d el)

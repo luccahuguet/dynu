@@ -1,4 +1,3 @@
-<!--- Automatically generated README --->
 # Dynu CLI
 
 Dynu CLI is a Nushell-based command-line utility for managing JSON-backed data tables and records. It provides simple commands to create and manipulate tables, fields, and records, persisting data under `~/.dynu`.
@@ -36,39 +35,39 @@ nu dynu.nu main
 ```
 
 ### Table Commands
-- `list` — List all tables
-- `add table <name> <field> <value>` — Create a new table with an initial record
-- `set table <name>` — Set the current table
-- `rm table <name>` — Remove a table
+- `ls tbs` — List all tables
+- `a tb <name> <field> <value>` — Create a new table with an initial record
+- `set tb <name>` — Set the current table
+- `d tb <name>` — Remove a table
 
 ### Field Commands
-- `ls fields` — List fields in the current table
-- `add field <field>` — Add a new field to the current table
-- `rm field <field>` — Remove a field from the current table
+- `ls fls` — List fields in the current table
+- `a fl <field>` — Add a new field to the current table
+- `d fl <field>` — Remove a field from the current table
 
 ### Record Commands
-- `add <field> <value>` — Add a record to the current table
-- `e elm <index> <field> <value>` — Edit a record by index
-- `rm elm <index>` — Remove a record by index
-- `purge` — Remove all records from the current table
+- `a <field> <value>` — Add a record to the current table
+- `e el <index> <field> <value>` — Edit a record by index
+- `d el <index>` — Remove a record by index
+- `purge tb` — Remove all records from the current table
 
 ### Examples
 ```nu
 # Create and switch to a new table 'users'
-nu dynu.nu add table users name Alice
-nu dynu.nu set table users
+nu dynu.nu a tb users name Alice
+nu dynu.nu set tb users
 
 # Add records
-nu dynu.nu add age 30
-nu dynu.nu add name Bob
+nu dynu.nu a age 30
+nu dynu.nu a name Bob
 
 # List fields and records
-nu dynu.nu ls fields
+nu dynu.nu ls fls
 nu dynu.nu
 
 # Edit and remove records
-nu dynu.nu e elm 1 age 31
-nu dynu.nu rm elm 0
+nu dynu.nu e el 1 age 31
+nu dynu.nu d el 0
 ``` 
 
 ## Configuration

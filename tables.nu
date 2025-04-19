@@ -23,8 +23,8 @@ def add_table [new_table_name: string, init_field: string, init_value: string] {
     }
     $new_table_name
 }
-# User-facing add table command without interactive input
-export def "add table" [name: string, field: string, value: string] { add_table $name $field $value }
+# User-facing add table command without interactive input (shortened)
+export def "a tb" [name: string, field: string, value: string] { add_table $name $field $value }
 
 # Retrieves all table names from the dynu directory
 def get_table_names [] {
@@ -55,8 +55,8 @@ def get_table_names [] {
     }
 }
 
-# User-facing command to list tables (alias: "list")
-export def "list" [] {
+#+ User-facing command to list tables (shortened: "ls tbs")
+export def "ls tbs" [] {
     # List tables by retrieving existing table names
     let names = (get_table_names)
     # Build the output string based on whether any tables exist
@@ -99,8 +99,8 @@ def rm_table [table_name: string] {
         print $"Table ($table_name) does not exist"
     }
 }
-#+ User-facing rm table command
-export def "rm table" [name: string] { rm_table $name }
+#+ User-facing rm table command (shortened: "d tb")
+export def "d tb" [name: string] { rm_table $name }
 
 # Retrieves the name of the current table
 export def get_current_table_name [] {
@@ -131,10 +131,7 @@ export def get_current_table_name [] {
 def set_current_table [table_name: string] {
     {current_table: $table_name} | to json --raw | save (current_table_path_store_file) -f
 }
-#+ User-facing set table command
-export def "set table" [name: string] { set_current_table $name }
+#+ User-facing set table command (shortened: "set tb")
+export def "set tb" [name: string] { set_current_table $name }
 
-# Aliases for testing (snake_case)
-alias ls_tables = list
-alias add_table = add table
-alias rm_table = rm table
+# Removed old aliases: ls_tables, add_table, rm_table; use short commands (ls tbs, a tb, d tb)

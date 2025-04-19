@@ -12,65 +12,65 @@ source ../constants.nu
 source ../core.nu
 source ../tables.nu
 source ../fields.nu
-use ../dynu.nu [apply_color, add, "e elm", "rm elm", purge]
-alias edit_elm = e elm
-alias rm_elm = rm elm
+use ../dynu.nu [apply_color, a, "e el", "d el", "purge tb"]
+# Removed old aliases: edit_elm, rm_elm; use short commands (a, e el, d el, purge tb)
 
 print (apply_color "blue" "[Test 1] Testing table commands...")
 
-# 1. Initial ls tables
-let init = (ls_tables)
+## 1. Initial ls tbs
+let init = (ls tbs)
 assert str contains $init "Existing tables"
 
 # 2. Add table 'tbl' with initial field and value
-let added = (add_table tbl field1 value1)
+let added = (a tb tbl field1 value1)
 
-# 3. ls tables shows 'tbl'
-let after_ls = (ls_tables)
+## 3. ls tbs shows 'tbl'
+let after_ls = (ls tbs)
 assert str contains $after_ls "tbl"
 
 print (apply_color "blue" "[Test 2] Testing field commands...")
 
 ## 4. Add field 'newfield'
-add_field newfield
-let fields1 = (ls_fields)
+a fl newfield
+let fields1 = (ls fls)
 let fields1_str = ($fields1 | str join "\n")
 assert str contains $fields1_str "newfield"
 
-# 5. Remove field 'newfield'
-rm_field newfield
-let fields2 = (ls_fields)
+## 5. Remove field 'newfield'
+d fl newfield
+let fields2 = (ls fls)
 let fields2_str = ($fields2 | str join "\n")
 assert (not (($fields2_str | str contains "newfield")))
 
 print (apply_color "blue" "[Test 3] Testing dynu element commands...")
 
-# 6. Add element
+## 6. Add element
 let data_before = (($env.HOME + "/.dynu/tbl_dynu.json") | open)
 assert equal ($data_before | length) 1
-add field1 val1
+## Add element via short command
+a field1 val1
 let data1 = (($env.HOME + "/.dynu/tbl_dynu.json") | open)
 assert equal ($data1 | length) 2
 
-# 7. Edit element at index 1
-edit_elm 1 field1 edited1
+## 7. Edit element at index 1
+e el 1 field1 edited1
 let edited = (($env.HOME + "/.dynu/tbl_dynu.json") | open)
 assert equal ($edited | get 1 | get field1) "edited1"
 
-# 8. Remove element at index 0
-rm_elm 0
+## 8. Remove element at index 0
+d el 0
 let data2 = (($env.HOME + "/.dynu/tbl_dynu.json") | open)
 assert equal ($data2 | length) 1
 
-# 9. Purge elements
-purge
+## 9. Purge elements
+purge tb
 let data3 = (($env.HOME + "/.dynu/tbl_dynu.json") | open)
 assert equal ($data3 | length) 0
 
 print (apply_color "blue" "[Test 4] Testing table removal...")
 
-# 10. Remove table 'tbl'
-rm_table tbl
+## 10. Remove table 'tbl'
+d tb tbl
 assert (not (($env.HOME + "/.dynu/tbl_dynu.json") | path exists))
 
 print (apply_color "green" "[All user integration tests passed]")
