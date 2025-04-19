@@ -81,4 +81,4 @@ export def main [] {
 
 
 # Aliases for testing (snake_case)
-// Removed old aliases: edit_elm, rm_elm; use short commands (a, e el, d el)
+# Removed old aliases: edit_elm, rm_elm; use short commands (a, e el, d el)
