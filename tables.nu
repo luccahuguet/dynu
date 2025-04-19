@@ -55,19 +55,20 @@ def get_table_names [] {
     }
 }
 
-# User-facing command to list tables (alias: "ls tables")
-export def "ls tables" [] {
+# User-facing command to list tables (alias: "list")
+# User-facing command to list tables (alias: "list")
+export def "list" [] {
     # List tables by retrieving existing table names
     let names = (get_table_names)
-    if ($names | is-empty) {
-        # No tables
+    # Build the output string based on whether any tables exist
+    let output = if ($names | is-empty) {
         "Existing tables:"
     } else {
-        # Join table names into a space-separated string
         let names_str = ($names | sort | str join " ")
-        # Prefix header with joined names
-        "Existing tables: " + $names_str
+        ("Existing tables: " + $names_str)
     }
+    # Return the output string
+    $output
 }
 
 # Ensures a current table exists, returning an existing or first table without interactive input
@@ -87,9 +88,6 @@ def ensure_current_table [] {
         }
     }
 }
-
-#+ Alias ls_tables = "ls tables" defined below for testing
-# User-facing add table already provided above
 
 def rm_table [table_name: string] {
     # Build path to the table file to remove
@@ -133,10 +131,10 @@ export def get_current_table_name [] {
 def set_current_table [table_name: string] {
     {current_table: $table_name} | to json --raw | save (current_table_path_store_file) -f
 }
-#+ User-facing set current table command
-export def "set current table" [name: string] { set_current_table $name }
+#+ User-facing set table command
+export def "set table" [name: string] { set_current_table $name }
 
 # Aliases for testing (snake_case)
-alias ls_tables = ls tables
+alias ls_tables = list
 alias add_table = add table
 alias rm_table = rm table

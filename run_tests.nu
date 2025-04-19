@@ -1,6 +1,7 @@
 #!/usr/bin/env nu
 
 # Automated test runner for dynu project (Nushell)
+# dont use bash. use nushell.
 
 # Determine temporary home directory under project root
 let cwd = (pwd)
