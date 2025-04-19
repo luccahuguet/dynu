@@ -29,7 +29,7 @@ export def els [--show] {
 }
 
 # Define a function to edit an item in the current dynu table by index and field
-export def "edit elm" [elm_idx: number, field: string, value: string] {
+export def "e elm" [elm_idx: number, field: string, value: string] {
     if $is_debug_dynu { print $"Debug: Editing element at index ($elm_idx) in table (table_name) at path (get_current_table_path)" }
     let table = els
     # Retrieve existing element by index
@@ -81,5 +81,5 @@ export def main [] {
 
 
 # Aliases for testing (snake_case)
-alias edit_elm = edit elm
+alias edit_elm = e elm
 alias rm_elm = rm elm

@@ -80,7 +80,7 @@ This document captures key Nushell syntax patterns and commands used in the Dynu
 ## 7. Defining Commands and Aliases
 - Define a custom command:
   ```nu
-  export def "edit elm" [idx: number, field: string, value: string] {
+  export def "e elm" [idx: number, field: string, value: string] {
     # body...
   }
   ```

@@ -16,7 +16,7 @@ source ../dynu.nu
 alias ls_tables = list
 alias add_table = add table
 alias rm_table = rm table
-alias edit_elm = edit elm
+alias edit_elm = e elm
 alias rm_elm = rm elm
 
 print "[After init]"

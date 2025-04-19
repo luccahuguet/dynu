@@ -12,8 +12,8 @@ source ../constants.nu
 source ../core.nu
 source ../tables.nu
 source ../fields.nu
-use ../dynu.nu [apply_color, add, "edit elm", "rm elm", purge]
-alias edit_elm = edit elm
+use ../dynu.nu [apply_color, add, "e elm", "rm elm", purge]
+alias edit_elm = e elm
 alias rm_elm = rm elm
 
 print (apply_color "blue" "[Test 1] Testing table commands...")
