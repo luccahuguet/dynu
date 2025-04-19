@@ -24,7 +24,14 @@ export def core_remove_at [table: table, idx: number] {
 }
 
 export def core_update_at [table: table, idx: number, new: record] {
-    $table | update $idx $new
+    # Replace the element at the given index with the new record
+    $table | enumerate | each { |row|
+        if ($row.index == $idx) {
+            $new
+        } else {
+            $row.item
+        }
+    }
 }
 
 export def core_purge [table: table] {

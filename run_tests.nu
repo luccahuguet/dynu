@@ -7,21 +7,24 @@ let cwd = (pwd)
 let test_home = $cwd + "/tests/tmp_home"
 
 # Clean up previous test home
+# Temporarily move HOME to cwd to allow rm without home-protection
+let _old_home = $env.HOME
+$env.HOME = $cwd
 rm --recursive --force $test_home
 
 # Create fresh test home and set HOME env var
 mkdir $test_home
 $env.HOME = $test_home
 
-echo "Using HOME = ($env.HOME) for dynu tests"
+print $"Using HOME = ($env.HOME) for dynu tests"
 
-# Run core.nu tests
-echo "Running core.nu tests..."
-# Source the core test script
-source tests/core_tests.nu
-
+## Run core.nu tests
+print "Running core.nu tests..."
+# Run core tests in a new nushell process
+nu tests/core_tests.nu
 # Run user integration tests
-echo "Running user integration tests..."
-source tests/user_tests.nu
+print "Running user integration tests..."
+# Invoke nushell to run the user integration tests (inherits HOME)
+nu tests/user_tests.nu
 
-echo "All tests passed!"
+print "All tests passed!"
