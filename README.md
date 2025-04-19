@@ -80,7 +80,9 @@ Run the automated test suite:
 nu run_tests.nu
 ```
 ## Mascot
-![Dynu Mascot](assets/dynu-resized.jpg)
+<div style="text-align: center;">
+  <img src="assets/dynu-resized.jpg" alt="Dynu Mascot">
+</div>
 
 ## Contributing
 Contributions are welcome! Please open issues and pull requests on the [GitHub repository](https://github.com/luccahuguet/dynu).
