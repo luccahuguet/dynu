@@ -75,7 +75,7 @@ export def purge [] {
 }
 
 export def main [] {
-    list
+    print (list)
     print $"Current table: (table_name)"
 }
 

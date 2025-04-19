@@ -56,7 +56,6 @@ def get_table_names [] {
 }
 
 # User-facing command to list tables (alias: "list")
-# User-facing command to list tables (alias: "list")
 export def "list" [] {
     # List tables by retrieving existing table names
     let names = (get_table_names)
