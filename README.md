@@ -39,6 +39,7 @@ nu dynu.nu main
 - `a tb <name> <field> <value>` — Create a new table with an initial record
 - `set tb <name>` — Set the current table
 - `d tb <name>` — Remove a table
+- `purge tb` — Remove all records from the current table
 
 ### Field Commands
 - `ls fls` — List fields in the current table
@@ -49,7 +50,6 @@ nu dynu.nu main
 - `a <field> <value>` — Add a record to the current table
 - `e el <index> <field> <value>` — Edit a record by index
 - `d el <index>` — Remove a record by index
-- `purge tb` — Remove all records from the current table
 
 ### Examples
 ```nu
