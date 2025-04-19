@@ -2,6 +2,11 @@
 
 Dynu CLI is a Nushell-based command-line utility for managing JSON-backed data tables and records. It provides simple commands to create and manipulate tables, fields, and records, persisting data under `~/.dynu`.
 
+## Mascot
+Meet the Dynu CLI mascot, a swift and fierce dinosaur ready to help you manage your JSON-backed data tables!
+
+![Dynu Mascot](assets/dynu.jpg)
+
 ## Features
 - Table management: create, list, set, and remove tables
 - Field management: list, add, and remove fields in a table
