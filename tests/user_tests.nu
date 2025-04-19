@@ -12,9 +12,11 @@ source ../constants.nu
 source ../core.nu
 source ../tables.nu
 source ../fields.nu
-source ../dynu.nu
+use ../dynu.nu [apply_color, add, "edit elm", "rm elm", purge]
+alias edit_elm = edit elm
+alias rm_elm = rm elm
 
-echo "Testing table commands..."
+print (apply_color "blue" "[Test 1] Testing table commands...")
 
 # 1. Initial ls tables
 let init = (ls_tables)
@@ -27,7 +29,7 @@ let added = (add_table tbl field1 value1)
 let after_ls = (ls_tables)
 assert str contains $after_ls "tbl"
 
-echo "Testing field commands..."
+print (apply_color "blue" "[Test 2] Testing field commands...")
 
 ## 4. Add field 'newfield'
 add_field newfield
@@ -41,7 +43,7 @@ let fields2 = (ls_fields)
 let fields2_str = ($fields2 | str join "\n")
 assert (not (($fields2_str | str contains "newfield")))
 
-echo "Testing dynu element commands..."
+print (apply_color "blue" "[Test 3] Testing dynu element commands...")
 
 # 6. Add element
 let data_before = (($env.HOME + "/.dynu/tbl_dynu.json") | open)
@@ -65,10 +67,10 @@ purge
 let data3 = (($env.HOME + "/.dynu/tbl_dynu.json") | open)
 assert equal ($data3 | length) 0
 
-echo "Testing table removal..."
+print (apply_color "blue" "[Test 4] Testing table removal...")
 
 # 10. Remove table 'tbl'
 rm_table tbl
 assert (not (($env.HOME + "/.dynu/tbl_dynu.json") | path exists))
 
-echo "User integration tests passed"
+print (apply_color "green" "[All user integration tests passed]")
