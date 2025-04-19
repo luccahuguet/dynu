@@ -3,7 +3,7 @@ export use constants.nu [is_debug_dynu]
 export use fields.nu ["ls fls", "a fl", "d fl"]
 export use tables.nu ["a tb", "ls tbs", "d tb", "set tb"]
 use tables.nu [table_name, get_current_table_path]
-export use core.nu [core_add, core_sort_by, core_remove_at, core_update_at, core_purge]
+use core.nu [core_add, core_sort_by, core_remove_at, core_update_at, core_purge]
 
 export def apply_color [color: string, str: string] { $"(ansi $color)($str)(ansi reset)" }
 
@@ -20,8 +20,8 @@ export def a [field: string, value: string] {
     save_sort_show $updated_table "name"
 }
 
-# Define a function to read the current dynu table from the file
-export def els [--show] {
+# Define a function to read the current dynu table from the file (internal)
+def els [--show] {
     if $is_debug_dynu { print "Debug: Listing current dynu table items" }
     if $is_debug_dynu { print $"Debug: Reading table (table_name) from path (get_current_table_path)" }
     let table_data = (get_current_table_path) | open
@@ -42,7 +42,8 @@ export def "e el" [elm_idx: number, field: string, value: string] {
     save_sort_show $updated_table "name"
 }
 
-export def save_sort_show [table: table, field: string] {
+# Internal helper: sort, save, and show table (internal)
+def save_sort_show [table: table, field: string] {
     if $is_debug_dynu { print $"Debug: Sorting table by field ($field)" }
     let sorted = (core_sort_by $table $field true)
     if $is_debug_dynu { print $"Debug: Sorted table: ($sorted)" }
