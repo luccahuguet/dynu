@@ -62,12 +62,13 @@ export def "list" [] {
     let names = (get_table_names)
     # Build the output string based on whether any tables exist
     let output = if ($names | is-empty) {
+        # No tables exist
         "Existing tables:"
     } else {
         let names_str = ($names | sort | str join " ")
+        # Prefix header with joined names
         ("Existing tables: " + $names_str)
     }
-    # Return the output string
     $output
 }
 
