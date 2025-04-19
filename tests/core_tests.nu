@@ -2,7 +2,7 @@
 
 # core function tests for dynu/core.nu
 source ../core.nu
-use ../dynu.nu [apply_color]
+use ../utils.nu [apply_color]
 
 # Helper function for error exit
 def fail [msg: string] {

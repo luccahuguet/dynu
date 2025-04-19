@@ -4,8 +4,7 @@ export use fields.nu ["ls fls", "a fl", "d fl"]
 export use tables.nu ["a tb", "ls tbs", "d tb", "set tb"]
 use tables.nu [table_name, get_current_table_path]
 use core.nu [core_add, core_sort_by, core_remove_at, core_update_at, core_purge]
-
-export def apply_color [color: string, str: string] { $"(ansi $color)($str)(ansi reset)" }
+use utils.nu [apply_color]
 
 
 # Define a function to add a new item to the current dynu table without interactive input

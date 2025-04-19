@@ -8,11 +8,15 @@ use std/assert
 
 # Source project modules
 # Source project modules relative to tests directory
+# Source core modules
 source ../constants.nu
 source ../core.nu
 source ../tables.nu
 source ../fields.nu
-use ../dynu.nu [apply_color, a, "e el", "d el", "purge tb"]
+# Import apply_color from utils (internal use)
+use ../utils.nu [apply_color]
+# Import Dynu CLI commands
+use ../dynu.nu [a, "e el", "d el", "purge tb"]
 # Removed old aliases: edit_elm, rm_elm; use short commands (a, e el, d el, purge tb)
 
 print (apply_color "blue" "[Test 1] Testing table commands...")
