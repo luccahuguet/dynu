@@ -74,7 +74,7 @@ export def "purge tb" [] {
     $updated_table | to json --raw | save (get_current_table_path) -f
 }
 
-export def dynu_main [] {
+export def main [] {
     print (ls tbs)
     print $"Current table: (table_name)"
 }
