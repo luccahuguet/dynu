@@ -36,7 +36,7 @@ def els [--show] {
 # Function to edit an item in the current dynu table by index and field (e is for edit)
 export def "e el" [elm_idx: number, field: string, value: string] {
     if $is_debug_dynu { print $"Debug: Editing element at index ($elm_idx) in table (table_name) at path (get_current_table_path)" }
-    if (not ($elm_idx | describe | str trim | eq "int")) or ($field | is-empty) or ($value | is-empty) {
+    if (not ($elm_idx | describe | str trim == "int")) or ($field | is-empty) or ($value | is-empty) {
         error make {msg: "Error: Invalid index, field, or value provided"}
     }
     let table = els
@@ -70,7 +70,7 @@ def save_sort_show [table: table, field: string] {
 # Function to remove an item from the current dynu table by index (d is for delete)
 export def "d el" [elm_idx: number] {
     if $is_debug_dynu { print $"Debug: Removing element at index ($elm_idx) from table (table_name) at path (get_current_table_path)" }
-    if (not ($elm_idx | describe | str trim | eq "int")) {
+    if (not ($elm_idx | describe | str trim == "int")) {
         error make {msg: "Error: Invalid index provided"}
     }
     let table = els
