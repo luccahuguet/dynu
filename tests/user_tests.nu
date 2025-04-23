@@ -27,14 +27,14 @@ assert str contains $after_ls "tbl"
 print (apply_color "blue" "[Test 2] Testing field commands...")
 
 # 4. Add field 'newfield'
-"a fl" newfield  # Updated to single-letter function
-let fields1 = ("l fls")  # Updated to single-letter function
+"a fd" newfield  # Updated to new abbreviation
+let fields1 = ("l fds")  # Updated to new abbreviation
 let fields1_str = ($fields1 | str join "\n")
 assert str contains $fields1_str "newfield"
 
 # 5. Remove field 'newfield'
-"d fl" newfield  # Updated to single-letter function
-let fields2 = ("l fls")  # Updated to single-letter function
+"d fd" newfield  # Updated to new abbreviation
+let fields2 = ("l fds")  # Updated to new abbreviation
 let fields2_str = ($fields2 | str join "\n")
 assert (not ($fields2_str | str contains "newfield"))
 

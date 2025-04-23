@@ -1,6 +1,6 @@
 # dynu/dynu.nu
 export use constants.nu [is_debug_dynu]
-export use fields.nu ["l fls", "a fl", "d fl"]  # Updated exports for fields.nu functions
+export use fields.nu ["l fds", "a fd", "d fd"]  # Updated exports for fields.nu functions
 export use tables.nu ["a tb", "l tbs", "d tb", "s tb"]  # Updated exports for tables.nu functions
 use tables.nu [table_name, get_current_table_path]
 use core.nu [core_add, core_sort_by, core_remove_at, core_update_at, core_purge]

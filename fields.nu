@@ -3,8 +3,8 @@ export use constants.nu [is_debug_fields]
 export use tables.nu [get_current_table_name, table_name, get_current_table_path]
 export use core.nu [core_add_field, core_remove_field]
 
-# Function to list field names in the current table (l is for list)
-export def "l fls" [] {
+# Function to list field names in the current table (l is for list, fds is for fields)
+export def "l fds" [] {
     if $is_debug_fields { print $"Debug: Getting field names for table (table_name) at path (get_current_table_path)" }
     if not ((get_current_table_path) | path exists) {
         if $is_debug_fields { print "Debug: Table file does not exist" }
@@ -16,8 +16,8 @@ export def "l fls" [] {
     }
 }
 
-# Function to add a new field to the current table (a is for add)
-export def "a fl" [field: string] {
+# Function to add a new field to the current table (a is for add, fd is for field)
+export def "a fd" [field: string] {
     if $is_debug_fields { print $"Debug: Adding field ($field) to table (table_name) at path (get_current_table_path)" }
     let table = open --raw (get_current_table_path) | from json
     let updated = (core_add_field $table $field)
@@ -25,8 +25,8 @@ export def "a fl" [field: string] {
     echo $"Added field ($field) to table (table_name)"
 }
 
-# Function to remove a field from the current table (d is for delete)
-export def "d fl" [field: string] {
+# Function to remove a field from the current table (d is for delete, fd is for field)
+export def "d fd" [field: string] {
     if $is_debug_fields { print $"Debug: Removing field ($field) from table (table_name) at path (get_current_table_path)" }
     let table = open --raw (get_current_table_path) | from json
     let updated = (core_remove_field $table $field)

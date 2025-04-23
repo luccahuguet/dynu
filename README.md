@@ -42,9 +42,9 @@ nu dynu.nu main
 - `p tb` — Remove all records from the current table
 
 ### Field Commands
-- `l fls` — List fields in the current table
-- `a fl <field>` — Add a new field to the current table
-- `d fl <field>` — Remove a field from the current table
+- `l fds` — List fields in the current table
+- `a fd <field>` — Add a new field to the current table
+- `d fd <field>` — Remove a field from the current table
 
 ### Record Commands
 - `a <field> <value>` — Add a record to the current table
@@ -62,7 +62,7 @@ nu dynu.nu a age 30
 nu dynu.nu a name Bob
 
 # List fields and records
-nu dynu.nu l fls
+nu dynu.nu l fds
 nu dynu.nu
 
 # Edit and remove records
