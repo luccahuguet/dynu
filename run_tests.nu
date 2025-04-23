@@ -1,7 +1,6 @@
 #!/usr/bin/env nu
 
 # Automated test runner for dynu project (Nushell)
-# dont use bash. use nushell.
 
 # Determine temporary home directory under project root
 let cwd = (pwd)
@@ -21,11 +20,32 @@ print $"Using HOME = ($env.HOME) for dynu tests"
 
 ## Run core.nu tests
 print "Running core.nu tests..."
-# Run core tests in a new nushell process
-nu tests/core_tests.nu
+try {
+    nu tests/core_tests.nu
+    if $env.LAST_EXIT_CODE != 0 {
+        print "Error: core.nu tests failed!"
+        exit 1
+    } else {
+        print "core.nu tests passed."
+    }
+} catch {
+    print "Error: core.nu tests encountered an exception."
+    exit 1
+}
+
 # Run user integration tests
 print "Running user integration tests..."
-# Invoke nushell to run the user integration tests (inherits HOME)
-nu tests/user_tests.nu
+try {
+    nu tests/user_tests.nu
+    if $env.LAST_EXIT_CODE != 0 {
+        print "Error: user integration tests failed!"
+        exit 1
+    } else {
+        print "user integration tests passed."
+    }
+} catch {
+    print "Error: user integration tests encountered an exception."
+    exit 1
+}
 
 print "All tests passed!"

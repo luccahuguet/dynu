@@ -22,7 +22,12 @@ def add_table [new_table_name: string, init_field: string, init_value: string] {
 }
 
 # User-facing add table command (a is for add)
-export def "a tb" [name: string, field: string, value: string] { add_table $name $field $value }
+export def "a tb" [name: string, field: string, value: string] {
+    if ($name | is-empty) or ($field | is-empty) or ($value | is-empty) {
+        error make {msg: "Error: Name, field, and value must not be empty"}
+    }
+    add_table $name $field $value
+}
 
 # Retrieves all table names from the dynu directory
 def get_table_names [] {
@@ -75,16 +80,20 @@ def ensure_current_table [] {
 
 def rm_table [table_name: string] {
     let file_path = (dynu_dir) + "/" + $table_name + $table_file_suffix
-    if ($file_path | path exists) {
-        rm $file_path
-        print $"Removed table ($table_name)"
-    } else {
-        print $"Table ($table_name) does not exist"
+    if not ($file_path | path exists) {
+        error make {msg: $"Error: Table ($table_name) not found"}
     }
+    rm $file_path
+    print $"Removed table ($table_name)"
 }
 
 # User-facing remove table command (d is for delete)
-export def "d tb" [name: string] { rm_table $name }
+export def "d tb" [name: string] {
+    if ($name | is-empty) {
+        error make {msg: "Error: Table name must not be empty"}
+    }
+    rm_table $name
+}
 
 # Retrieves the name of the current table
 export def get_current_table_name [] {
@@ -115,4 +124,12 @@ def set_current_table [table_name: string] {
 }
 
 # User-facing set table command (s is for set)
-export def "s tb" [name: string] { set_current_table $name }
+export def "s tb" [name: string] {
+    if ($name | is-empty) {
+        error make {msg: "Error: Table name must not be empty"}
+    }
+    if ($name not-in (get_table_names)) {
+        error make {msg: $"Error: Table ($name) does not exist"}
+    }
+    set_current_table $name
+}

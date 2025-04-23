@@ -10,6 +10,9 @@ use utils.nu [apply_color]
 # Function to add a new item to the current dynu table (a is for add)
 export def a [field: string, value: string] {
     if $is_debug_dynu { print $"Debug: Adding element to table (table_name) at path (get_current_table_path)" }
+    if ($field | is-empty) or ($value | is-empty) {
+        error make {msg: "Error: Field and value must not be empty"}
+    }
     let element = { ($field): $value }
     # Read current elements
     let table = els
@@ -23,6 +26,9 @@ export def a [field: string, value: string] {
 def els [--show] {
     if $is_debug_dynu { print "Debug: Listing current dynu table items" }
     if $is_debug_dynu { print $"Debug: Reading table (table_name) from path (get_current_table_path)" }
+    if not (get_current_table_path | path exists) {
+        error make {msg: $"Error: Table file not found at (get_current_table_path)"}
+    }
     let table_data = (get_current_table_path) | open
     $table_data
 }
@@ -30,7 +36,13 @@ def els [--show] {
 # Function to edit an item in the current dynu table by index and field (e is for edit)
 export def "e el" [elm_idx: number, field: string, value: string] {
     if $is_debug_dynu { print $"Debug: Editing element at index ($elm_idx) in table (table_name) at path (get_current_table_path)" }
+    if ($elm_idx | is-not-number) or ($field | is-empty) or ($value | is-empty) {
+        error make {msg: "Error: Invalid index, field, or value provided"}
+    }
     let table = els
+    if $elm_idx >= ($table | length) {
+        error make {msg: $"Error: Index ($elm_idx) out of bounds"}
+    }
     # Retrieve existing element by index
     let element = ($table | get $elm_idx)
     # Update only the specified field (merge overrides existing field)
@@ -58,7 +70,13 @@ def save_sort_show [table: table, field: string] {
 # Function to remove an item from the current dynu table by index (d is for delete)
 export def "d el" [elm_idx: number] {
     if $is_debug_dynu { print $"Debug: Removing element at index ($elm_idx) from table (table_name) at path (get_current_table_path)" }
+    if ($elm_idx | is-not-number) {
+        error make {msg: "Error: Invalid index provided"}
+    }
     let table = els
+    if $elm_idx >= ($table | length) {
+        error make {msg: $"Error: Index ($elm_idx) out of bounds"}
+    }
     let updated_table = (core_remove_at $table $elm_idx)
     save_sort_show $updated_table "grade"
 }
