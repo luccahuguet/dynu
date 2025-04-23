@@ -9,7 +9,7 @@ export def get_current_table_path [] {
 # Alias for get_current_table_name
 export def table_name [] { get_current_table_name }
 
-# Creates a new table with an initial field and value
+# Creates a new table with an initial field and value (a is for add table)
 def add_table [new_table_name: string, init_field: string, init_value: string] {
     let file_path = (dynu_dir) + "/" + $new_table_name + $table_file_suffix
     if not ($file_path | path exists) {
@@ -21,7 +21,7 @@ def add_table [new_table_name: string, init_field: string, init_value: string] {
     $new_table_name
 }
 
-# User-facing add table command without interactive input (shortened)
+# User-facing add table command (a is for add)
 export def "a tb" [name: string, field: string, value: string] { add_table $name $field $value }
 
 # Retrieves all table names from the dynu directory
@@ -46,8 +46,8 @@ def get_table_names [] {
     }
 }
 
-# User-facing command to list tables (shortened: "ls tbs")
-export def "ls tbs" [] {
+# User-facing command to list tables (l is for list)
+export def "l tbs" [] {
     let names = (get_table_names | sort)
     if ($names | is-empty) {
         "Existing tables:"
@@ -83,7 +83,7 @@ def rm_table [table_name: string] {
     }
 }
 
-# User-facing rm table command (shortened: "d tb")
+# User-facing remove table command (d is for delete)
 export def "d tb" [name: string] { rm_table $name }
 
 # Retrieves the name of the current table
@@ -114,5 +114,5 @@ def set_current_table [table_name: string] {
     {current_table: $table_name} | to json --raw | save (current_table_path_store_file) -f
 }
 
-# User-facing set table command (shortened: "set tb")
-export def "set tb" [name: string] { set_current_table $name }
+# User-facing set table command (s is for set)
+export def "s tb" [name: string] { set_current_table $name }

@@ -1,13 +1,13 @@
 # dynu/dynu.nu
 export use constants.nu [is_debug_dynu]
-export use fields.nu ["ls fls", "a fl", "d fl"]
-export use tables.nu ["a tb", "ls tbs", "d tb", "set tb"]
+export use fields.nu ["l fls", "a fl", "d fl"]  # Updated exports for fields.nu functions
+export use tables.nu ["a tb", "l tbs", "d tb", "s tb"]  # Updated exports for tables.nu functions
 use tables.nu [table_name, get_current_table_path]
 use core.nu [core_add, core_sort_by, core_remove_at, core_update_at, core_purge]
 use utils.nu [apply_color]
 
 
-# Define a function to add a new item to the current dynu table without interactive input
+# Function to add a new item to the current dynu table (a is for add)
 export def a [field: string, value: string] {
     if $is_debug_dynu { print $"Debug: Adding element to table (table_name) at path (get_current_table_path)" }
     let element = { ($field): $value }
@@ -19,7 +19,7 @@ export def a [field: string, value: string] {
     save_sort_show $updated_table "name"
 }
 
-# Define a function to read the current dynu table from the file (internal)
+# Function to read the current dynu table from the file (internal, not user-facing)
 def els [--show] {
     if $is_debug_dynu { print "Debug: Listing current dynu table items" }
     if $is_debug_dynu { print $"Debug: Reading table (table_name) from path (get_current_table_path)" }
@@ -27,7 +27,7 @@ def els [--show] {
     $table_data
 }
 
-# Define a function to edit an item in the current dynu table by index and field
+# Function to edit an item in the current dynu table by index and field (e is for edit)
 export def "e el" [elm_idx: number, field: string, value: string] {
     if $is_debug_dynu { print $"Debug: Editing element at index ($elm_idx) in table (table_name) at path (get_current_table_path)" }
     let table = els
@@ -41,7 +41,7 @@ export def "e el" [elm_idx: number, field: string, value: string] {
     save_sort_show $updated_table "name"
 }
 
-# Internal helper: sort, save, and show table (internal)
+# Internal helper: sort, save, and show table (internal, not user-facing)
 def save_sort_show [table: table, field: string] {
     if $is_debug_dynu { print $"Debug: Sorting table by field ($field)" }
     let sorted = (core_sort_by $table $field true)
@@ -55,7 +55,7 @@ def save_sort_show [table: table, field: string] {
     els --show
 }
 
-# Define a function to remove an item from the current dynu table by index
+# Function to remove an item from the current dynu table by index (d is for delete)
 export def "d el" [elm_idx: number] {
     if $is_debug_dynu { print $"Debug: Removing element at index ($elm_idx) from table (table_name) at path (get_current_table_path)" }
     let table = els
@@ -63,8 +63,8 @@ export def "d el" [elm_idx: number] {
     save_sort_show $updated_table "grade"
 }
 
-# Define a function to purge the current dynu table
-export def "purge tb" [] {
+# Function to purge the current dynu table (p is for purge)
+export def "p tb" [] {
     if $is_debug_dynu { print $"Debug: Purging table (table_name) at path (get_current_table_path)" }
     let table = els
     let updated_table = (core_purge $table)
@@ -81,4 +81,4 @@ export def main [] {
 
 
 # Aliases for testing (snake_case)
-# Removed old aliases: edit_elm, rm_elm; use short commands (a, e el, d el)
+# Removed old aliases: edit_elm, rm_elm; use short commands (a, e el, d el, p tb)

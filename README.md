@@ -35,14 +35,14 @@ nu dynu.nu main
 ```
 
 ### Table Commands
-- `ls tbs` — List all tables
+- `l tbs` — List all tables
 - `a tb <name> <field> <value>` — Create a new table with an initial record
-- `set tb <name>` — Set the current table
+- `s tb <name>` — Set the current table
 - `d tb <name>` — Remove a table
-- `purge tb` — Remove all records from the current table
+- `p tb` — Remove all records from the current table
 
 ### Field Commands
-- `ls fls` — List fields in the current table
+- `l fls` — List fields in the current table
 - `a fl <field>` — Add a new field to the current table
 - `d fl <field>` — Remove a field from the current table
 
@@ -55,14 +55,14 @@ nu dynu.nu main
 ```nu
 # Create and switch to a new table 'users'
 nu dynu.nu a tb users name Alice
-nu dynu.nu set tb users
+nu dynu.nu s tb users
 
 # Add records
 nu dynu.nu a age 30
 nu dynu.nu a name Bob
 
 # List fields and records
-nu dynu.nu ls fls
+nu dynu.nu l fls
 nu dynu.nu
 
 # Edit and remove records
