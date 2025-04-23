@@ -21,17 +21,17 @@ Dynu CLI is a Nushell-based command-line utility for managing JSON-backed data t
 2. Ensure Nushell (`nu`) is installed and in your `PATH`.
 3. (Optional) Add an alias to your Nushell configuration (`~/.config/nushell/config.nu`):
    ```nu
-   alias dynu = { source "/path/to/dynu/dynu.nu" }
+   alias dynu = { source "/path/to/dynu/main.nu" }
    ```
 4. You can now invoke commands via:
-   - `nu dynu.nu <command>`
+   - `nu main.nu <command>`
    - `dynu <command>` (if alias is configured)
 
 ## Usage
 
 Run `main` to list available tables and show the current table:
 ```nu
-nu dynu.nu main
+nu main.nu main
 ```
 
 ### Table Commands
@@ -54,20 +54,20 @@ nu dynu.nu main
 ### Examples
 ```nu
 # Create and switch to a new table 'users'
-nu dynu.nu a tb users name Alice
-nu dynu.nu set tb users
+nu main.nu a tb users name Alice
+nu main.nu set tb users
 
 # Add records
-nu dynu.nu a age 30
-nu dynu.nu a name Bob
+nu main.nu a age 30
+nu main.nu a name Bob
 
 # List fields and records
-nu dynu.nu ls fls
-nu dynu.nu
+nu main.nu ls fls
+nu main.nu
 
 # Edit and remove records
-nu dynu.nu e el 1 age 31
-nu dynu.nu d el 0
+nu main.nu e el 1 age 31
+nu main.nu d el 0
 ``` 
 
 ## Configuration
