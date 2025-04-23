@@ -3,7 +3,6 @@ export use constants.nu [current_table_path_store_file, is_debug_tables, dynu_di
 # Returns the path of the current table file
 export def get_current_table_path [] {
     let table_name = get_current_table_name
-    # Build path to the current table file
     (dynu_dir) + "/" + $table_name + $table_file_suffix
 }
 
@@ -12,10 +11,8 @@ export def table_name [] { get_current_table_name }
 
 # Creates a new table with an initial field and value
 def add_table [new_table_name: string, init_field: string, init_value: string] {
-    # Build path for the new table file
     let file_path = (dynu_dir) + "/" + $new_table_name + $table_file_suffix
     if not ($file_path | path exists) {
-        # Create initial table with a single record using provided field and value
         let initial_row = { ($init_field): $init_value }
         mkdir (dynu_dir)
         [ $initial_row ] | to json --raw | save $file_path -f
@@ -23,17 +20,16 @@ def add_table [new_table_name: string, init_field: string, init_value: string] {
     }
     $new_table_name
 }
+
 # User-facing add table command without interactive input (shortened)
 export def "a tb" [name: string, field: string, value: string] { add_table $name $field $value }
 
 # Retrieves all table names from the dynu directory
 def get_table_names [] {
-    # Return list of table names (without suffix) from dynu directory
     let dir = (dynu_dir)
     if not ($dir | path exists) {
         []
     } else {
-        # Migrate old nuon table files to JSON format
         let nuon_files = (glob $"($dir)/*_dynu.nuon")
         if not ($nuon_files | is-empty) {
             $nuon_files | each { |f|
@@ -43,39 +39,27 @@ def get_table_names [] {
                 rm $f
             }
         }
-        # Use glob to match table files with JSON suffix and extract names
         let pattern = $"(dynu_dir)/*($table_file_suffix)"
         let files = (glob $pattern)
-        let names = ($files | each { |f|
-            # Extract basename and remove suffix
-            let base = ($f | path basename)
-            ($base | str replace $table_file_suffix "")
-        })
+        let names = ($files | each { |f| ($f | path basename | str replace $table_file_suffix "") })
         $names
     }
 }
 
-#+ User-facing command to list tables (shortened: "ls tbs")
+# User-facing command to list tables (shortened: "ls tbs")
 export def "ls tbs" [] {
-    # List tables by retrieving existing table names
-    let names = (get_table_names)
-    # Build the output string based on whether any tables exist
-    let output = if ($names | is-empty) {
-        # No tables exist
+    let names = (get_table_names | sort)
+    if ($names | is-empty) {
         "Existing tables:"
     } else {
-        let names_str = ($names | sort | str join " ")
-        # Prefix header with joined names
-        ("Existing tables: " + $names_str)
+        "Existing tables: " + ($names | str join " ")
     }
-    $output
 }
 
-# Ensures a current table exists, returning an existing or first table without interactive input
+# Ensures a current table exists
 def ensure_current_table [] {
     let tables = (get_table_names)
     if ($tables | is-empty) {
-        # No tables exist; return empty
         ""
     } else {
         let current = (table_name)
@@ -90,7 +74,6 @@ def ensure_current_table [] {
 }
 
 def rm_table [table_name: string] {
-    # Build path to the table file to remove
     let file_path = (dynu_dir) + "/" + $table_name + $table_file_suffix
     if ($file_path | path exists) {
         rm $file_path
@@ -99,21 +82,20 @@ def rm_table [table_name: string] {
         print $"Table ($table_name) does not exist"
     }
 }
-#+ User-facing rm table command (shortened: "d tb")
+
+# User-facing rm table command (shortened: "d tb")
 export def "d tb" [name: string] { rm_table $name }
 
 # Retrieves the name of the current table
 export def get_current_table_name [] {
     let json_path = current_table_path_store_file
     let old_path = ($json_path | str replace ".json" ".nuon")
-    # Migrate old current_table file if present
-    # If old Nuon current_table file exists, migrate it
     if (not ($json_path | path exists)) and ($old_path | path exists) {
         let content = (open $old_path)
         $content | collect | to json --raw | save $json_path -f
         rm $old_path
     }
-    if not (($json_path) | path exists) {
+    if not ($json_path | path exists) {
         mkdir (dynu_dir)
         let table_name = ensure_current_table
         {current_table: $table_name} | to json --raw | save $json_path -f
@@ -131,7 +113,6 @@ export def get_current_table_name [] {
 def set_current_table [table_name: string] {
     {current_table: $table_name} | to json --raw | save (current_table_path_store_file) -f
 }
-#+ User-facing set table command (shortened: "set tb")
-export def "set tb" [name: string] { set_current_table $name }
 
-# Removed old aliases: ls_tables, add_table, rm_table; use short commands (ls tbs, a tb, d tb)
+# User-facing set table command (shortened: "set tb")
+export def "set tb" [name: string] { set_current_table $name }
