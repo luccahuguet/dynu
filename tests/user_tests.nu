@@ -9,7 +9,7 @@ source ../constants.nu
 source ../core.nu
 source ../tables.nu
 source ../fields.nu
-use ../dynu_cli.nu [a, "e el", "d el", "purge tb"]
+use ../dynu.nu [a, "e el", "d el", "purge tb"]
 
 print (apply_color "blue" "[Test 1] Testing table commands...")
 
