@@ -2,6 +2,7 @@
 
 # Integration tests for Dynu CLI
 use std/assert
+use ../utils.nu [apply_color]  # Added to import apply_color function
 
 # Source project modules
 source ../constants.nu
