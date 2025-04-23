@@ -34,6 +34,22 @@ Run `main` to list available tables and show the current table:
 nu dynu.nu main
 ```
 
+### Command Abbreviations
+Dynu CLI uses single-letter commands for brevity and simplicity. This design choice makes interactions concise but may require familiarity. Below is a quick reference for the abbreviations used in commands:
+
+- **a**: Add (e.g., add a record or table)
+- **e el**: Edit element (e.g., edit a record by index)
+- **d el**: Delete element (e.g., remove a record by index)
+- **d tb**: Delete table (e.g., remove a table)
+- **l tbs**: List tables (e.g., show all tables)
+- **l fds**: List fields (e.g., show fields in the current table)
+- **a fd**: Add field (e.g., add a new field to the current table)
+- **d fd**: Delete field (e.g., remove a field from the current table)
+- **s tb**: Set table (e.g., switch to a different table)
+- **p tb**: Purge table (e.g., clear all records from the current table)
+
+Refer to the examples below for practical usage.
+
 ### Table Commands
 - `l tbs` — List all tables
 - `a tb <name> <field> <value>` — Create a new table with an initial record
